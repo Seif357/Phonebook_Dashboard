@@ -1,0 +1,115 @@
+<div class="container">
+  <mat-toolbar>
+    <h1>Phonebook</h1>
+  </mat-toolbar>
+
+  <div class="content">
+    <!-- Contact Form -->
+    <div class="contact-form">
+      <h2 class="form-title">Add New Contact</h2>
+      <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label>Name</label>
+          <input 
+            formControlName="name" 
+            type="text" 
+            class="form-control"
+            [class.is-invalid]="name?.invalid && (name?.dirty || name?.touched)"
+            title="Name"
+            placeholder="Enter name"
+          >
+          <div *ngIf="name?.invalid && (name?.dirty || name?.touched)" class="validation-error">
+            Name is required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input 
+            formControlName="phoneNumber" 
+            type="text" 
+            class="form-control"
+            [class.is-invalid]="phoneNumber?.invalid && (phoneNumber?.dirty || phoneNumber?.touched)"
+            title="Phone Number"
+            placeholder="Enter phone number"
+          >
+          <div *ngIf="phoneNumber?.invalid && (phoneNumber?.dirty || phoneNumber?.touched)" class="validation-error">
+            Phone number is required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Email</label>
+          <input 
+            formControlName="email" 
+            type="email" 
+            class="form-control"
+            maxlength="100"
+            placeholder="Enter email"
+            [class.is-invalid]="email?.invalid && (email?.dirty || email?.touched)">
+          <div *ngIf="email?.errors?.['required'] && (email?.dirty || email?.touched)" class="validation-error">
+            Email is required
+          </div>
+          <div *ngIf="email?.errors?.['email'] && (email?.dirty || email?.touched)" class="validation-error">
+            Invalid email format
+          </div>
+          <div *ngIf="email?.errors?.['maxlength'] && (email?.dirty || email?.touched)" class="validation-error">
+            Email cannot exceed 100 characters
+          </div>
+        </div>
+        
+
+        <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+        <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+
+        <button 
+          type="submit" 
+          class="btn-primary"
+          [disabled]="!contactForm.valid"
+        >
+          Add Contact
+        </button>
+      </form>
+    </div>
+
+    <!-- Contacts List & Search -->
+    <div class="contact-list-container">
+      <div class="search-container">
+        <div class="search-box">
+          <!-- Option 2: Call onSearchChange() to use the debounced search -->
+      <input 
+      [(ngModel)]="searchTerm" 
+      (ngModelChange)="onSearchChange($event)"
+      placeholder="Search contacts..." 
+      class="search-input">
+
+          <button class="btn-primary search-btn" (click)="executeSearch()">
+            Search
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="loading" class="loading">Loading contacts...</div>
+      
+      <div *ngIf="!loading && contacts.length === 0" class="loading">
+        No contacts found
+      </div>
+
+      <div class="contact-list">
+        <div *ngFor="let contact of contacts" class="contact-card">
+          <div class="contact-info">
+            <div class="contact-name">{{ contact.name }}</div>
+            <div class="contact-phone">{{ contact.phoneNumber }}</div>
+            <div class="contact-email">{{ contact.email }}</div>
+          </div>
+          <button 
+            class="btn-danger"
+            (click)="onDelete(contact.id)"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
