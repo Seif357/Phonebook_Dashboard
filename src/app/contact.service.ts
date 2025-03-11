@@ -13,7 +13,7 @@ interface CreateContactDto {
   providedIn: 'root'
 })
 export class ContactService {
-  private apiUrl = 'http://phonebooksystem.runasp.net/api/Contacts'; // Update port if needed
+  private apiUrl = 'https://phonebooksystem.runasp.net/api/Contacts'; // Update port if needed
 
   constructor(private http: HttpClient) { }
 
@@ -23,12 +23,12 @@ export class ContactService {
 
  // In contact.service.ts
 addContact(contactData: any): Observable<string> {
-  return this.http.post('http://phonebooksystem.runasp.net/api/Contacts', contactData, { responseType: 'text' });
+  return this.http.post('https://phonebooksystem.runasp.net/api/Contacts', contactData, { responseType: 'text' });
 }
 
 
 deleteContact(id: number): Observable<string> {
-  return this.http.delete(`http://phonebooksystem.runasp.net/api/Contacts/${id}`, { responseType: 'text' });
+  return this.http.delete(`https://phonebooksystem.runasp.net/api/Contacts/${id}`, { responseType: 'text' });
 }
 
 
